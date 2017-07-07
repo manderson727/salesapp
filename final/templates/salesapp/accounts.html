@@ -3,13 +3,24 @@
 
 <html>
 <head>
-    <title>Sales App About Page</title>
+    <title>Sales App Accounts Page</title>
 </head>
 <body>
-<h1>Sales App about page</h1>
+<h1>Sales App Accounts</h1>
 <div>
-    Sales App about page<br/>
+    Sales App Accounts page <br />
     <strong>{{ boldmessage }}</strong><br />
+</div>
+<div>
+    {% if customers %}
+    <ul>
+        {% for customer in customers %}
+            <li>{{ customer.accountnum }} - {{ customer.name }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <strong>No customers</strong>
+    {% endif %}
 </div>
 <div>
     <a href="/salesapp/">Index</a><br />
