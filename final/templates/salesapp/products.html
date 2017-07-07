@@ -11,23 +11,38 @@
     Sales App Products page <br />
     <strong>{{ boldmessage }}</strong><br />
 </div>
-<div>
-    {% if products %}
-    <ul>
-        {% for product in products %}
-            <li>{{ product.itemid }} - {{ product.itemname }} - {{ product.brand }}</li>
-        {% endfor %}
-    </ul>
-    {% else %}
-        <strong>No products</strong>
-    {% endif %}
-</div>
+
 <div>
     <a href="/salesapp/">Index</a><br />
     <a href="/salesapp/about/">About</a><br />
     <a href="/salesapp/accounts/">Accounts</a><br />
     <a href="/salesapp/products/">Products</a><br />
     <img src="{% static 'images/logo.png' %}" alt="Holts Logo" />
+</div>
+
+
+<div>
+    <div>
+    {% if products %}
+        <ul style="list-style:none; text-align:center;">
+        {% for product in products %}
+            <li style="float:left; width:25%; margin:20px;">
+                    <img src="/{{ product.image }}"/>
+                <div>
+                    <b>{{ product.itemname }}</b><br/>
+                    Price per cigar:<br/>
+                    <b>{{ product.price }}</b>
+                </div>
+            </li>
+            {% endfor %}
+        {% else %}
+            <strong>No products</strong>
+        {% endif %}
+        </ul>
+    </div>
+<!-- More code -->
+</div>
+
 </div>
 </body>
 </html>

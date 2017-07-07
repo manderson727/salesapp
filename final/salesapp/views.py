@@ -26,3 +26,4 @@ def products(request):
     context_dict = {'products': product_list}
 
     return render(request, 'salesapp/products.html', context_dict)
+
