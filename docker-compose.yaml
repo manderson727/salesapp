@@ -1,0 +1,18 @@
+django:
+  build: .
+  ports:
+    - "8000:8000"
+  volumes:
+    - ./:/var/finalproject
+  links:
+    - mysql
+  command: python manage.py runserver 0.0.0.0:8000
+mysql:
+  image: mysql:8
+  expose:
+    - "3306"
+  ports:
+    - "3306:3306"
+  environment:
+    - MYSQL_ROOT_PASSWORD=unsecure
+
