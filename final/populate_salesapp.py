@@ -17,24 +17,36 @@ def populate():
     for accnum, accname in customers.items():
         c = add_cust(accnum, accname)
 
-    products = {"CASCH": "Ashton Churchill",
-                "CASMA": "Ashton Magnum",
-                "CASDM": "Ashton Double Magnum",
-                "CLADCNBEL": "La Aroma de Cuba El Jefe",
-                "CSCELGR": "San Cristobal Elegancia Grandioso",
-                "CSCRLEV": "San Cristobal Revelation Leviathan"
-    }
+    products = [{"itemid": "CASCH",
+                 "itemname": "Ashton Churchill",
+                 "brand": "Ashton Classic"},
+                {"itemid": "CASMA",
+                 "itemname": "Ashton Magnum",
+                 "brand": "Ashton Classic"},
+                {"itemid": "CASDM",
+                 "itemname": "Ashton Double Magnum",
+                 "brand": "Ashton Classic"},
+                {"itemid": "CLADCNBEL",
+                 "itemname": "La Aroma de Cuba El Jefe",
+                 "brand": "La Aroma de Cuba"},
+                {"itemid": "CSCELGR",
+                 "itemname": "San Cristobal Elegancia Grandioso",
+                 "brand": "San Cristobal"},
+                {"itemid": "CSCRLEV",
+                 "itemname": "San Cristobal Revelation Leviathan",
+                 "brand": "San Cristobal"}]
 
-    for itemid, itemname in products.items():
-        p = add_prod(itemid, itemname)
+    for prod in products:
+        #print(prod)
+        p = add_prod(prod["itemid"], prod["itemname"], prod["brand"])
 
 def add_cust(accountnum, name):
     c = Customer.objects.get_or_create(accountnum=accountnum, name=name)[0]
     c.save()
     return c
 
-def add_prod(itemid, itemname):
-    p = Product.objects.get_or_create(itemid=itemid, itemname=itemname)[0]
+def add_prod(itemid, itemname, brand):
+    p = Product.objects.get_or_create(itemid=itemid, itemname=itemname, brand=brand)[0]
     p.save()
     return p
 
