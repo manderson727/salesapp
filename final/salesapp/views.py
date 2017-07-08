@@ -5,6 +5,7 @@ from salesapp.models import Customer, Product
 from salesapp.forms import UserForm
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from salesapp.forms import ProductForm, CustomerForm
 
 def index(request):
     #return HttpResponse("Sales App index!")
@@ -48,7 +49,30 @@ def show_product(request, product_name_slug):
 
     return render(request, 'salesapp/singleproduct.html', context_dict)
 
+def add_product(request):
+    form = ProductForm(request.POST, request.FILES)
 
+    if form.is_valid():
+        #print(request.FILES)
+        newProduct = form.save(commit=False)
+        newProduct.image = request.FILES['image']
+        form.save(commit=True)
+        return index(request)
+    else:
+        print(form.errors)
+
+    return render(request, 'salesapp/add_product.html', {'form': form})
+
+def add_customer(request):
+    form = CustomerForm(request.POST)
+
+    if form.is_valid():
+        form.save(commit=True)
+        return index(request)
+    else:
+        print(form.errors)
+
+    return render(request, 'salesapp/add_customer.html', {'form': form})
 
 # @login_required
 # def restricted(request):

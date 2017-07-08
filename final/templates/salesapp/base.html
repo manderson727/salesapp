@@ -28,6 +28,8 @@
                 <li><a href="{% url 'auth_logout' %}?next=/salesapp/">Logout</a></li>
                 <li><a href="{% url 'customers' %}">Accounts</a></li>
                 <li><a href="{% url 'products' %}">Products</a></li>
+                <li><a href="{% url 'add_product' %}">Add Product</a></li>
+                <li><a href="{% url 'add_customer' %}">Add Customer</a></li>
             {% else %}
                 <li><a href="{% url 'registration_register' %}">Register</a></li>
                 <li><a href="{% url 'auth_login' %}">Login</a></li>

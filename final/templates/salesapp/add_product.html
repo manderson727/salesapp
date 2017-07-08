@@ -1,0 +1,35 @@
+{% extends 'salesapp/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Add Product
+{% endblock %}
+
+{% block body_block %}
+
+
+
+<h1>Add a Category</h1>
+    <div>
+        <form enctype="multipart/form-data" id="category_form" id="page_form" method="post" action="/salesapp/add_product/">
+
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+            {% for field in form.visible_fields %}
+                {{ field.errors }}
+                {{ field.help_text }}
+                {{ field }}
+            {% endfor %}
+
+            <button class="btn btn-primary"
+                    type="submit" name="submit">
+                Add Product
+            </button>
+        </form>
+    </div>
+
+
+
+{% endblock %}
