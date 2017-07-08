@@ -3,28 +3,23 @@
 {% load staticfiles %}
 
 {% block title_block %}
-    Products Page
+    {{ product.itemname }}
 {% endblock %}
 
 {% block body_block %}
 
     <div>
         <div>
-        {% if products %}
             <ul style="list-style:none; text-align:center;">
-            {% for product in products %}
                 <li style="float:left; width:25%; margin:20px;">
                         <img src="/{{ product.image }}"/>
                     <div>
-                        <b><a href="/salesapp/items/{{ product.slug }}">{{ product.itemname }}</a></b><br/>
+                        <b>{{ product.itemname }}</b><br/>
                         Price per cigar:<br/>
                         <b>${{ product.price }}</b>
+                        <p>{{ product.notes }}</p>
                     </div>
                 </li>
-                {% endfor %}
-            {% else %}
-                <strong>No products</strong>
-            {% endif %}
             </ul>
         </div>
     <!-- More code -->
