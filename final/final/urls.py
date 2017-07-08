@@ -19,16 +19,17 @@ from django.conf.urls import include
 from salesapp import views
 from django.conf import settings
 from django.conf.urls.static import static
+from registration.backends.simple.views import RegistrationView
+from django.contrib.auth import views as auth_views
+
+class MyRegistrationView(RegistrationView):
+    def get_sucess_url(self, user):
+        return '/salesapp/'
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'about/', views.about, name='about'),
-    url(r'accounts/', views.accounts, name='accounts'),
-    url(r'products/', views.products, name='products'),
-    url(r'items/(?P<product_name_slug>[\w\-]+)/$', views.show_product, name='show_product'),
     url(r'^salesapp/', include('salesapp.urls')),
-    url(r'^register/$', views.register, name='register'),
-    url(r'^login/$', views.user_login, name='login'),
-    url(r'^restricted/', views.restricted, name='restricted'),
     url(r'^admin/', admin.site.urls),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
+    url(r'^accounts/register/$', MyRegistrationView.as_view(), name='registration_register'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

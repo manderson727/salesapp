@@ -18,4 +18,12 @@ from salesapp import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'about/', views.about, name='about'),
+    url(r'customers/', views.customers, name='customers'),
+    url(r'products/', views.products, name='products'),
+    url(r'items/(?P<product_name_slug>[\w\-]+)/$', views.show_product, name='show_product'),
+    #url(r'^register/$', views.register, name='register'),
+    #url(r'^login/$', views.user_login, name='login'),
+    #url(r'^logout/$', views.user_logout, name='logout'),
+    #url(r'^restricted/', views.restricted, name='restricted'),
 ]

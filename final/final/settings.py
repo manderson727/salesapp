@@ -29,6 +29,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+#LOGIN_URL = '/salesapp/login/'
+REGISTRATION_OPEN = True
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
+LOGIN_REDIRECT_URL = '/salesapp/'
+LOGIN_URL = '/accounts/login/'
 
 # Application definition
 
@@ -40,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'salesapp',
+    'registration'
 ]
 
 MIDDLEWARE_CLASSES = [
