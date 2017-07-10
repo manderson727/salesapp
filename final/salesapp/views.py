@@ -89,12 +89,6 @@ def add_CartItem(request, product_name_slug):
 
         ci = CartItem.objects.create(cart_id=1, date_added=date.date.today(), quantity=1, itemid=p)
 
-        # ci = CartItem()
-        # ci.product = p
-        # ci.quantity = 1
-        # ci.cart_id = 123
-        # ci.save()
-
         form.save(commit=True)
         return index(request)
     else:
