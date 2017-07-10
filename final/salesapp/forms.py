@@ -31,16 +31,21 @@ class CustomerForm(forms.ModelForm):
         fields = ('accountnum', 'name', )
 
 class ProductAddToCartForm(forms.ModelForm):
+    cart_id = forms.CharField(max_length=50)
+    date_added = forms.DateTimeField()
     quantity = forms.IntegerField()
-    #slug = forms.CharField(widget=forms.HiddenInput(), required=False)
+    slug = forms.CharField(widget=forms.HiddenInput(), required=False)
+
+    #itemid = models.ForeignKey('Product', unique=False)
+
+    def __int__(self, request=None, *args, **kwargs):
+        self.request = request
+        super(ProductAddToCartForm, self).__int__(*args, **kwargs)
 
     class Meta:
         model = CartItem
-        fields = ('quantity', )
+        fields = ('cart_id', 'date_added', 'quantity', 'slug', 'itemid', )
 
-    # def __int__(self, request=None, *args, **kwargs):
-    #     self.request = request
-    #     super(ProductAddToCartForm, self).__int__(*args, **kwargs)
     #
     # def clean(self):
     #     if self.request:

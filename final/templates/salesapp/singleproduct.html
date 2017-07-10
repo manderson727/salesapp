@@ -20,7 +20,7 @@
                         <p>{{ product.notes }}</p>
                     </div>
 
-                    <form method="post" action="/salesapp/add_CartItem/{{ product.slug }}/" class="cart">
+                    <form method="post" action="/salesapp/items/add/{{ product.slug }}/" class="cart">
                         {% csrf_token %}
                         {% for hidden in form.hidden_fields %}
                             {{ hidden }}
