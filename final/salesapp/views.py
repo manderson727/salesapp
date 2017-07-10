@@ -8,6 +8,9 @@ from django.contrib.auth.decorators import login_required
 from salesapp.forms import ProductForm, CustomerForm, ProductAddToCartForm
 import datetime as date
 from django.db.models import Q
+import random
+
+CART_ID_SESSION_KEY = 'cart_id'
 
 def index(request):
     #return HttpResponse("Sales App index!")
@@ -91,10 +94,27 @@ def search(request):
 
 def add_CartItem(request, product_name_slug):
     product = Product.objects.get(slug=product_name_slug)
-    ci = CartItem.objects.create(cart_id=1, date_added=date.date.today(), quantity=1, itemid_id=2)
-    ci.save()#you save your model changes, not your form
+    print(product)
+
+    ci = CartItem.objects.create(cart_id=_cart_id(request), date_added=date.date.today(), quantity=1, itemid_id=2)
+    ci.save()
 
     return render(request, 'salesapp/cart.html', {'Products': product})
+
+# get the current user's cart id, sets new one if blank
+def _cart_id(request):
+    if request.session.get(CART_ID_SESSION_KEY,'') == '':
+        request.session[CART_ID_SESSION_KEY] = _generate_cart_id()
+    return request.session[CART_ID_SESSION_KEY]
+
+def _generate_cart_id():
+    cart_id = ''
+    characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()'
+    cart_id_length = 50
+    for y in range(cart_id_length):
+        cart_id += characters[random.randint(0, len(characters)-1)]
+
+    return cart_id
 
 
 #def add_CartItem(request, product_name_slug):
