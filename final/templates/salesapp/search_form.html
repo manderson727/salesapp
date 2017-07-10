@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% extends 'salesapp/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+{% endblock %}
+
+{% block body_block %}
+    <h1>Search Title</h1>
+
+    <div>
+	<form method="get" action="/salesapp/search/">
+	  Search Products: <input type="text" name="q" />
+	  <input type="submit" value="Search" />
+	</form>
+    </div>
+{% endblock %}

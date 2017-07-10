@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from salesapp.forms import ProductForm, CustomerForm, ProductAddToCartForm
 import datetime as date
+from django.db.models import Q
 
 def index(request):
     #return HttpResponse("Sales App index!")
@@ -75,44 +76,113 @@ def show_product(request, product_name_slug):
 
     return render(request, 'salesapp/singleproduct.html', context_dict)
 
+def search_form(request):
+    return render(request, 'salesapp/search_form.html')
+
+def search(request):
+    if 'q' in request.GET: # and request.GET['q']:
+        q = request.GET['q']
+        Products = Product.objects.filter(Q(itemname__icontains=q) | Q(brand__icontains=q))
+        return render(request, 'salesapp/search_results.html', {'Products': Products, 'query': q})
+    else:
+        return HttpResponse('Please submit a search title')
+
 #------------------------------------------------------------------------------
 
 def add_CartItem(request, product_name_slug):
-    print('In add_CartItem --------------------')
-    form = ProductAddToCartForm(request.POST)
+    product = Product.objects.get(slug=product_name_slug)
+    ci = CartItem.objects.create(cart_id=1, date_added=date.date.today(), quantity=1, itemid_id=2)
+    ci.save()#you save your model changes, not your form
 
-    p = Product.objects.get(slug=product_name_slug)
-    form = ProductAddToCartForm(initial={'cart_id': 123, 'date_added':date.date.today(), 'quantity': 1, 'slug':p.slug, 'id':p.id, 'itemid':p.itemid})
+    return render(request, 'salesapp/cart.html', {'Products': product})
 
-    form.save(commit=False)
 
-    print("----------------------")
-    print(form)
-    print(p)
-    print(p.slug)
-    print(p.id)
-    print(p.itemid)
-    print("----------------------")
+#def add_CartItem(request, product_name_slug):
+    # form = ProductAddToCartForm(request.POST)
+    # product = Product.objects.get(slug=product_name_slug)
+    # print(product.itemid)
+    # print(form)
+    #
+    # form = ProductAddToCartForm(initial={'cart_id': 123, 'itemid':product.itemid})
+    #
+    # if form.is_valid():
+    #     print("-----------------")
+    #     #ci = CartItem.objects.create(cart_id=1, date_added=date.date.today(), quantity=1, itemid=product.itemid)
+    #     #ci.save()#you save your model changes, not your form
+    #
+    #     form.save(commit=True)
+    #     return index(request)
+    # else:
+    #     print(form.errors)
+    #
+    # return render(request, 'salesapp/cart.html', {'form': form})
 
-    if request.method == 'POST':
-        print("In Post")
-        if form.is_valid():
-            print(p)
-            print('In form.is_valid()--------------------------------')
 
-            ci = CartItem.objects.create(cart_id=1, date_added=date.date.today(), quantity=1, itemid=p)
+    # form = ProductAddToCartForm(request.POST)
+    # print(form.is_bound)
+    # product = Product.objects.get(slug=product_name_slug)
+    #
+    # context_dict = {}
+    # context_dict['product'] = product
+    #
+    # if request.method == 'POST':
+    #     print('In Post')
+    #     form = ProductAddToCartForm(initial={'cart_id': 123, 'date_added':date.date.today(), 'quantity': 1, 'slug':product.slug, 'id':product.id, 'itemid':product.itemid, 'itemid_id':2})
+    #
+    #     if form.is_valid():
+    #         ci = CartItem.objects.create(cart_id=1, date_added=date.date.today(), quantity=1, itemid=p)
+    #         ci.save() #you save your model changes, not your form
+    #         return HttpResponseRedirect(reverse('your:url'))#your return the success url or the same
+    #     else:
+    #         print(form.errors)
+    #         #here error, if form isn't valid
+    # else:
+    #     print('In Get')
+    #     form = ProductAddToCartForm(request.POST)
+    #
+    # return render(request, 'salesapp/singleproduct.html', context_dict)
 
-            form.save(commit=True)
-            return index(request)
-        else:
-            print(form.errors) #return render(request, 'salesapp/errors.html', {'form': form})
-
-    if request.method == 'GET':
-        form = ProductAddToCartForm()
-        print("In Get")
-        print(p)
-
-    return render(request, 'salesapp/singleproduct.html', {'form': form})
+    # print('In add_CartItem --------------------')
+    # #form = ProductAddToCartForm(request.POST)
+    #
+    # context_dict = {}
+    # product = Product.objects.get(slug=product_name_slug)
+    #
+    # context_dict['product'] = product
+    #
+    # print("----------------------")
+    # #print(form)
+    # print(product)
+    # print(product.slug)
+    # print(product.id)
+    # print(product.itemid)
+    # print("----------------------")
+    #
+    # if request.method == 'POST':
+    #     print("In Post")
+    #     form = ProductAddToCartForm(request.POST)
+    #     #form = ProductAddToCartForm(initial={'cart_id': 123, 'date_added':date.date.today(), 'quantity': 1, 'slug':product.slug, 'id':product.id, 'itemid':product.itemid, itemid_id:2})
+    #     #form.save(commit=True)
+    #     print(form)
+    #     if form.is_valid():
+    #         print(product)
+    #         print('In form.is_valid()--------------------------------')
+    #
+    #         ci = CartItem.objects.create(cart_id=1, date_added=date.date.today(), quantity=1, itemid=product, itemid_id=2)
+    #
+    #         form.save(commit=True)
+    #         return index(request)
+    #     else:
+    #         #print(form.errors)
+    #         #print(form.non_field_errors)
+    #         return render(request, 'salesapp/errors.html', {'form': form})
+    #
+    # if request.method == 'GET':
+    #     form = ProductAddToCartForm()
+    #     print("In Get")
+    #     print(product)
+    #
+    # return render(request, 'salesapp/singleproduct.html', context_dict) #{'form': form})
 
 # @login_required
 # def restricted(request):

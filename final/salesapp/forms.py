@@ -32,8 +32,8 @@ class CustomerForm(forms.ModelForm):
 
 class ProductAddToCartForm(forms.ModelForm):
     cart_id = forms.CharField(max_length=50)
-    date_added = forms.DateTimeField()
-    quantity = forms.IntegerField()
+    date_added = forms.DateTimeField(required=False)
+    quantity = forms.IntegerField(required=False)
     slug = forms.CharField(widget=forms.HiddenInput(), required=False)
 
     #itemid = models.ForeignKey('Product', unique=False)
