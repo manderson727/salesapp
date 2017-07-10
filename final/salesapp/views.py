@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
-from salesapp.models import Customer, Product
+from salesapp.models import Customer, Product, CartItem
 from salesapp.forms import UserForm
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from salesapp.forms import ProductForm, CustomerForm
+from salesapp.forms import ProductForm, CustomerForm, ProductAddToCartForm
+import datetime as date
 
 def index(request):
     #return HttpResponse("Sales App index!")
@@ -73,6 +74,33 @@ def add_customer(request):
         print(form.errors)
 
     return render(request, 'salesapp/add_customer.html', {'form': form})
+
+
+#------------------------------------------------------------------------------
+
+def add_CartItem(request, product_name_slug):
+    print('In add_CartItem --------------------')
+    form = ProductAddToCartForm(request.POST)
+
+    if form.is_valid():
+        p = Product.objects.get(slug=product_name_slug)
+        print(p)
+        print('In form.is_valid()--------------------------------')
+
+        ci = CartItem.objects.create(cart_id=1, date_added=date.date.today(), quantity=1, itemid=p)
+
+        # ci = CartItem()
+        # ci.product = p
+        # ci.quantity = 1
+        # ci.cart_id = 123
+        # ci.save()
+
+        form.save(commit=True)
+        return index(request)
+    else:
+        print(form.errors)
+
+
 
 # @login_required
 # def restricted(request):

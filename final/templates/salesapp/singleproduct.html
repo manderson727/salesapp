@@ -19,6 +19,21 @@
                         <b>${{ product.price }}</b>
                         <p>{{ product.notes }}</p>
                     </div>
+
+                    <form method="post" action="/salesapp/add_CartItem/{{ product.slug }}/" class="cart">
+                        {% csrf_token %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        {% for field in form.visible_fields %}
+                            {{ field.errors }}
+                            {{ field.help_text }}
+                            {{ field }}
+                        {% endfor %}
+                         <br />
+                         <input type="submit" value="Add To Cart" name="submit" alt="Add To Cart" />
+                    </form>
+                    <div class="cb"></div>
                 </li>
             </ul>
         </div>
