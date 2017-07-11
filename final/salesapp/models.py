@@ -1,6 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
+from django import forms
 
 class Customer(models.Model):
     accountnum = models.CharField(max_length=128, unique=True)
@@ -34,7 +35,9 @@ class CartItem(models.Model):
     cart_id = models.CharField(max_length=50)
     date_added = models.DateTimeField(auto_now_add=True)
     quantity = models.IntegerField(default=1)
+
     itemid = models.ForeignKey('Product', unique=False)
+    user = models.ForeignKey(User, unique=False)
 
     class Meta:
         db_table = 'cart_items'
@@ -49,9 +52,9 @@ class CartItem(models.Model):
     # def get_absolute_url(self):
     #     return self.product.get_absolute_url()
     #
-    # def augment_quantity(self, quantity):
-    #     self.quantity = self.quantity + int(quantity)
-    #     self.save()
+    def augment_quantity(self, quantity):
+        self.quantity = self.quantity + int(quantity)
+        self.save()
     #
     # def total(self):
     #     return self.quantity * self.product.price
