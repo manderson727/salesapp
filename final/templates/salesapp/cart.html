@@ -9,11 +9,24 @@
 {% block body_block %}
 
     <h1>Cart Page</h1>
-    Cart item count: {{ cart_item_count }}
 
-    {{ product.itemid }}
-    {{ product.itemname }}
-    {{ cartitem.quantity }}
+<div>
+        <div>
+            <ul style="list-style:none; text-align:center;">
+                <li style="float:left; width:25%; margin:20px;">
+                        <img src="/{{ product.image }}"/>
+                    <div>
+                        <b>{{ product.itemname }}</b><br/>
+                        Price per cigar:<br/>
+                        <b>${{ product.price }}</b>
+                        <p>{{ product.notes }}</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    <!-- More code -->
+    </div>
+
 
 {% endblock %}
 

@@ -52,9 +52,9 @@ class CartItem(models.Model):
     # def get_absolute_url(self):
     #     return self.product.get_absolute_url()
     #
-    def augment_quantity(self, quantity):
-        self.quantity = self.quantity + int(quantity)
-        self.save()
+    # def augment_quantity(self, quantity):
+    #     self.quantity = self.quantity + int(quantity)
+    #     self.save()
     #
     # def total(self):
     #     return self.quantity * self.product.price

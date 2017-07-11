@@ -79,6 +79,15 @@ def show_product(request, product_name_slug):
 
     return render(request, 'salesapp/singleproduct.html', context_dict)
 
+def show_cart(request):
+#Needs work
+    context_dict = {}
+    cartItems = _cart_id
+
+    context_dict['cart'] = cartItems
+
+    return render(request, 'salesapp/cart.html', context_dict)
+
 def search_form(request):
     return render(request, 'salesapp/search_form.html')
 
@@ -120,7 +129,8 @@ def add_CartItem(request, product_name_slug):
         ci.save()
         context_dict['cartitem'] = ci
 
-    return render(request, 'salesapp/cart.html', context_dict) # {'Products': product})
+    return render(request, 'salesapp/singleproduct.html', context_dict)
+    #return render(request, 'salesapp/cart.html', context_dict) # {'Products': product})
 
 # get the current user's cart id, sets new one if blank
 def _cart_id(request):
