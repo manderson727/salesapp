@@ -3,35 +3,38 @@
 {% load staticfiles %}
 
 {% block title_block %}
-    Cart page
+    Shopping Cart
 {% endblock %}
 
 {% block body_block %}
 
-    <h1>Cart Page</h1>
+    <h1>Shopping Cart</h1>
 
-<div>
-
-        <div>
-        {% if cartitems %}
-            <ul>
+    {% if cartitems %}
+        <table>
+            <tr>
+                <th style="width: 500px; border-bottom:1px solid gray;">Product</th>
+                <th style="width: 50px; border-bottom:1px solid gray; text-align:center;">Qty</th>
+                <th style="width: 50px; border-bottom:1px solid gray; text-align:center;">Price</th>
+            </tr>
             {% for cartitem in cartitems %}
-                <li style="list-style:none; border-bottom:1px solid gray; padding-bottom:10px; margin-bottom:10px;">
-                    <div>
-                        <b>UserID:</b>{{ cartitem.user_id }}<br/>
-                        <b>Qty:</b>{{ cartitem.quantity }}<br/>
-                        <b>ItemID:</b>{{ cartitem.itemid_id }}<br/>
-                        <b>Brand:</b>{{ product.brand }}<br/>
+            <tr style="height:100px; border-bottom:1px solid gray;">
+                <td style="width: 500px;">
+                    <div style="float: left;">
+                    <img style="width:75px; height:75px; margin-right: 10px;"src="{{ MEDIA_URL }}{{ cartitem.itemid.image }}"/>
                     </div>
-                </li>
+                    {{ cartitem.itemid.itemid }}<br/>
+                    {{ cartitem.itemid.itemname }}
+                </td>
+                <td style="width: 10px; text-align:center;">{{ cartitem.quantity }}</td>
+                <td style="width: 10px; text-align:center;">${{ cartitem.itemid.price }}</td>
+            </tr>
             {% endfor %}
-        {% else %}
-            </ul>
-                <strong>No cart items</strong>
-        {% endif %}
-        </div>
-    <!-- More code -->
-    </div>
+        </table>
+    {% else %}
+         <strong>No cart items</strong>
+    {% endif %}
+
 
 {% endblock %}
 

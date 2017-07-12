@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render_to_response
 from salesapp.models import Customer, Product, CartItem
 from salesapp.forms import UserForm
 from django.core.urlresolvers import reverse
@@ -89,21 +90,39 @@ def show_product(request, product_name_slug):
 def show_cart(request):
     user = request.user.id
     context_dict = {}
-    products = []
     cartItems = CartItem.objects.filter(user_id=user)
 
-    print(cartItems)
+    #cartItems = CartItem.objects.all().prefetch_related('Product').filter(user_id=user)
+    #products = Product.objects.all()
 
-    for cartItem in cartItems:
-        product = Product.objects.filter(id=cartItem.itemid_id)
-        products.append(product)
-        # print(cartItem.itemid_id)
-        # products.append(Product.objects.filter(id=cartItem.itemid_id))
+    #test = Product.objects.all()
 
-    print(products)
+    #print(test.products_set.all())
+
+    #products = Product.objects.prefetch_related('products')
+
+    # for cartItem in cartItems:
+    #     for product in allproducts:
+    #         if cartItem.itemid_id == product.id:
+    #             print(product)
+    #             products.append(product)
+
+    #print(cartItems)
+
+    # for cartItem in cartItems:
+    #     product = Product.objects.filter(id=cartItem.itemid_id)
+    #     products.append(product)
+    #     # print(cartItem.itemid_id)
+    #     # products.append(Product.objects.filter(id=cartItem.itemid_id))
+
+    #print(products)
+
+    #products = Product.objects.all().prefetch_related('products')
+    #products = CartItem.objects.select_related('itemid')
+    #print(products)
 
     context_dict['cartitems'] = cartItems
-    context_dict['products'] = products
+    #context_dict['products'] = products
 
     print("--------------------")
     print(context_dict)
