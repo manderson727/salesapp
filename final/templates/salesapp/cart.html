@@ -16,6 +16,7 @@
                 <th style="width: 500px; border-bottom:1px solid gray;">Product</th>
                 <th style="width: 50px; border-bottom:1px solid gray; text-align:center;">Qty</th>
                 <th style="width: 50px; border-bottom:1px solid gray; text-align:center;">Price</th>
+                <th style="width: 50px; border-bottom:1px solid gray; text-align:center;">Total</th>
             </tr>
             {% for cartitem in cartitems %}
             <tr style="height:100px; border-bottom:1px solid gray;">
@@ -24,10 +25,11 @@
                     <img style="width:75px; height:75px; margin-right: 10px;"src="{{ MEDIA_URL }}{{ cartitem.itemid.image }}"/>
                     </div>
                     {{ cartitem.itemid.itemid }}<br/>
-                    {{ cartitem.itemid.itemname }}
+                    <a href="/salesapp/items/{{ cartitem.itemid.slug }}">{{ cartitem.itemid.itemname }}</a>
                 </td>
                 <td style="width: 10px; text-align:center;">{{ cartitem.quantity }}</td>
                 <td style="width: 10px; text-align:center;">${{ cartitem.itemid.price }}</td>
+                <td style="width: 10px; text-align:center;">${{ cartitem.total }}</td>
             </tr>
             {% endfor %}
         </table>

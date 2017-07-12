@@ -92,41 +92,7 @@ def show_cart(request):
     context_dict = {}
     cartItems = CartItem.objects.filter(user_id=user)
 
-    #cartItems = CartItem.objects.all().prefetch_related('Product').filter(user_id=user)
-    #products = Product.objects.all()
-
-    #test = Product.objects.all()
-
-    #print(test.products_set.all())
-
-    #products = Product.objects.prefetch_related('products')
-
-    # for cartItem in cartItems:
-    #     for product in allproducts:
-    #         if cartItem.itemid_id == product.id:
-    #             print(product)
-    #             products.append(product)
-
-    #print(cartItems)
-
-    # for cartItem in cartItems:
-    #     product = Product.objects.filter(id=cartItem.itemid_id)
-    #     products.append(product)
-    #     # print(cartItem.itemid_id)
-    #     # products.append(Product.objects.filter(id=cartItem.itemid_id))
-
-    #print(products)
-
-    #products = Product.objects.all().prefetch_related('products')
-    #products = CartItem.objects.select_related('itemid')
-    #print(products)
-
     context_dict['cartitems'] = cartItems
-    #context_dict['products'] = products
-
-    print("--------------------")
-    print(context_dict)
-    print("--------------------")
 
     return render(request, 'salesapp/cart.html', context_dict)
 

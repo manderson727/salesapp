@@ -56,5 +56,6 @@ class CartItem(models.Model):
     #     self.quantity = self.quantity + int(quantity)
     #     self.save()
     #
-    # def total(self):
-    #     return self.quantity * self.product.price
+    @property
+    def total(self):
+        return self.quantity #* self.product.price
