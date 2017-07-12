@@ -9,6 +9,7 @@ from salesapp.forms import ProductForm, CustomerForm, ProductAddToCartForm
 import datetime as date
 from django.db.models import Q
 import random
+from django.contrib.auth.decorators import login_required
 
 CART_ID_SESSION_KEY = 'cart_id'
 
@@ -25,18 +26,21 @@ def about(request):
 
     return render(request, 'salesapp/about.html', context=context_dict)
 
+@login_required
 def customers(request):
     customer_list = Customer.objects.all()
     context_dict = {'customers': customer_list}
 
     return render(request, 'salesapp/customers.html', context_dict)
 
+@login_required
 def products(request):
     product_list = Product.objects.all()
     context_dict = {'products': product_list}
 
     return render(request, 'salesapp/products.html', context_dict)
 
+@login_required
 def add_product(request):
     form = ProductForm(request.POST, request.FILES)
 
@@ -45,23 +49,25 @@ def add_product(request):
         newProduct = form.save(commit=False)
         newProduct.image = request.FILES['image']
         form.save(commit=True)
-        return index(request)
+        return products(request)
     else:
         print(form.errors)
 
     return render(request, 'salesapp/add_product.html', {'form': form})
 
+@login_required
 def add_customer(request):
     form = CustomerForm(request.POST)
 
     if form.is_valid():
         form.save(commit=True)
-        return index(request)
+        return customers(request)
     else:
         print(form.errors)
 
     return render(request, 'salesapp/add_customer.html', {'form': form})
 
+@login_required
 def show_product(request, product_name_slug):
 
     context_dict = {}
@@ -79,20 +85,39 @@ def show_product(request, product_name_slug):
 
     return render(request, 'salesapp/singleproduct.html', context_dict)
 
+@login_required
 def show_cart(request):
-#Needs work
+    user = request.user.id
     context_dict = {}
-    cartItems = _cart_id
+    products = []
+    cartItems = CartItem.objects.filter(user_id=user)
 
-    context_dict['cart'] = cartItems
+    print(cartItems)
+
+    for cartItem in cartItems:
+        product = Product.objects.filter(id=cartItem.itemid_id)
+        products.append(product)
+        # print(cartItem.itemid_id)
+        # products.append(Product.objects.filter(id=cartItem.itemid_id))
+
+    print(products)
+
+    context_dict['cartitems'] = cartItems
+    context_dict['products'] = products
+
+    print("--------------------")
+    print(context_dict)
+    print("--------------------")
 
     return render(request, 'salesapp/cart.html', context_dict)
 
+@login_required
 def search_form(request):
     return render(request, 'salesapp/search_form.html')
 
+@login_required
 def search(request):
-    if 'q' in request.GET: # and request.GET['q']:
+    if 'q' in request.GET:
         q = request.GET['q']
         Products = Product.objects.filter(Q(itemname__icontains=q) | Q(brand__icontains=q))
         return render(request, 'salesapp/search_results.html', {'Products': Products, 'query': q})
@@ -101,18 +126,15 @@ def search(request):
 
 #------------------------------------------------------------------------------
 
+@login_required
 def add_CartItem(request, product_name_slug):
     context_dict = {}
     product = Product.objects.get(slug=product_name_slug)
     user = request.user.id
-    print(product)
-    print(product.id)
 
     context_dict['product'] = product
 
     cartItems = get_cart_items(request)
-    print(cartItems)
-    print(_cart_id(request))
     product_in_cart = False
 
     for cartItem in cartItems:
@@ -130,9 +152,7 @@ def add_CartItem(request, product_name_slug):
         context_dict['cartitem'] = ci
 
     return render(request, 'salesapp/singleproduct.html', context_dict)
-    #return render(request, 'salesapp/cart.html', context_dict) # {'Products': product})
 
-# get the current user's cart id, sets new one if blank
 def _cart_id(request):
     if request.session.get(CART_ID_SESSION_KEY,'') == '':
         request.session[CART_ID_SESSION_KEY] = _generate_cart_id()

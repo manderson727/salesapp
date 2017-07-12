@@ -11,22 +11,27 @@
     <h1>Cart Page</h1>
 
 <div>
+
         <div>
-            <ul style="list-style:none; text-align:center;">
-                <li style="float:left; width:25%; margin:20px;">
-                        <img src="/{{ product.image }}"/>
+        {% if cartitems %}
+            <ul>
+            {% for cartitem in cartitems %}
+                <li style="list-style:none; border-bottom:1px solid gray; padding-bottom:10px; margin-bottom:10px;">
                     <div>
-                        <b>{{ product.itemname }}</b><br/>
-                        Price per cigar:<br/>
-                        <b>${{ product.price }}</b>
-                        <p>{{ product.notes }}</p>
+                        <b>UserID:</b>{{ cartitem.user_id }}<br/>
+                        <b>Qty:</b>{{ cartitem.quantity }}<br/>
+                        <b>ItemID:</b>{{ cartitem.itemid_id }}<br/>
+                        <b>Brand:</b>{{ product.brand }}<br/>
                     </div>
                 </li>
+            {% endfor %}
+        {% else %}
             </ul>
+                <strong>No cart items</strong>
+        {% endif %}
         </div>
     <!-- More code -->
     </div>
-
 
 {% endblock %}
 

@@ -109,6 +109,13 @@ initial-scale=1, shrink-to-fit=no">
         <div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 main">
             {% block body_block %}{% endblock %}
         </div>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
     </div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
