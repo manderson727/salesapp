@@ -35,7 +35,7 @@
                 <td style="width: 10px; text-align:center;">${{ cartitem.itemid.price }}</td>
                 <td style="width: 10px; text-align:center;">${{ cartitem.total }}</td>
 
-                    <form method="post" action="." class="cart">
+                    <form method="post" action="/salesapp/items/{{ cartitem.itemid.slug }}/update/" class="cart">
                         {% csrf_token %}
                         {% for hidden in form.hidden_fields %}
                             {{ hidden }}
@@ -49,7 +49,7 @@
                 <td><input type="text" name="quantity" value="{{ cartitem.quantity }}" id="quantity"
                      size="2" class="quantity" maxlength="5" />
                 </td>
-                     <input type="hidden" name="itemid_id" value="{{ cartitem.itemid_id }}" />
+                     <input type="hidden" name="id" value="{{ cartitem.id }}" />
                 <td>
                          <input type="submit" name="submit" value="Update" />
                      </form>

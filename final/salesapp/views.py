@@ -124,6 +124,27 @@ def remove_from_cart(request, product_name_slug):
     return render(request, 'salesapp/cart.html', context_dict)
 
 @login_required
+def update_cart(request, product_name_slug):
+    user = request.user.id
+    context_dict = {}
+    id = int(request.POST.get('id', 1))
+    quantity = request.POST.get('quantity', 1)
+
+    cart_item = CartItem.objects.get(id=id, cart_id=_cart_id(request))
+
+    if cart_item:
+        if int(quantity) > 0:
+            cart_item.quantity = int(quantity)
+            cart_item.save()
+        else:
+            remove_from_cart(request,product_name_slug)
+
+    cartItems = CartItem.objects.filter(user_id=user)
+    context_dict['cartitems'] = cartItems
+
+    return render(request, 'salesapp/cart.html', context_dict)
+
+@login_required
 def show_cart(request):
     user = request.user.id
     context_dict = {}

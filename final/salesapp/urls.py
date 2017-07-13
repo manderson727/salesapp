@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^items/(?P<product_name_slug>[\w\-]+)/$', views.show_product, name='show_product'),
     url(r'^items/(?P<product_name_slug>[\w\-]+)/add/$', views.add_CartItem, name='add_CartItem'),
     url(r'^items/(?P<product_name_slug>[\w\-]+)/remove/$', views.remove_from_cart, name='remove_from_cart'),
+    url(r'^items/(?P<product_name_slug>[\w\-]+)/update/$', views.update_cart, name='update_cart'),
     url(r'^search-form/$', views.search_form, name="search_form"),
     url(r'^search/$', views.search, name="search"),
     url(r'^cart/$', views.show_cart, name="show_cart"),
