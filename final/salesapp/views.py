@@ -87,16 +87,6 @@ def show_product(request, product_name_slug):
     return render(request, 'salesapp/singleproduct.html', context_dict)
 
 @login_required
-def show_cart(request):
-    user = request.user.id
-    context_dict = {}
-    cartItems = CartItem.objects.filter(user_id=user)
-
-    context_dict['cartitems'] = cartItems
-
-    return render(request, 'salesapp/cart.html', context_dict)
-
-@login_required
 def search_form(request):
     return render(request, 'salesapp/search_form.html')
 
@@ -112,10 +102,44 @@ def search(request):
 #------------------------------------------------------------------------------
 
 @login_required
+def remove_from_cart(request, product_name_slug):
+    user = request.user.id
+    context_dict = {}
+    id = int(request.POST.get('id',1))
+    print("---------------------")
+    print("REMOVE")
+    print(request)
+    print(request.POST.get('id',1))
+    print(id)
+    print("---------------------")
+
+    cart_item = CartItem(id=id, cart_id=_cart_id(request))
+    print(cart_item.cart_id)
+    if cart_item:
+        cart_item.delete()
+
+    cartItems = CartItem.objects.filter(user_id=user)
+    context_dict['cartitems'] = cartItems
+
+    return render(request, 'salesapp/cart.html', context_dict)
+
+@login_required
+def show_cart(request):
+    user = request.user.id
+    context_dict = {}
+    cartItems = CartItem.objects.filter(user_id=user)
+
+    context_dict['cartitems'] = cartItems
+
+    return render(request, 'salesapp/cart.html', context_dict)
+
+@login_required
 def add_CartItem(request, product_name_slug):
     context_dict = {}
     product = Product.objects.get(slug=product_name_slug)
     user = request.user.id
+
+    quantity = request.POST.get('quantity',1)
 
     context_dict['product'] = product
 
@@ -124,15 +148,15 @@ def add_CartItem(request, product_name_slug):
 
     for cartItem in cartItems:
         if cartItem.itemid_id == product.id:
-            print("Update")
+            #print("Update")
             cart = CartItem.objects.get(id=cartItem.id)
-            cart.quantity = cartItem.quantity + 1
+            cart.quantity = cartItem.quantity + int(quantity)
             cart.save()
             product_in_cart = True
 
     if not product_in_cart:
-        print("Create")
-        ci = CartItem.objects.create(cart_id=_cart_id(request), date_added=date.date.today(), quantity=1, itemid_id=product.id, user_id=user)
+        #print("Create")
+        ci = CartItem.objects.create(cart_id=_cart_id(request), date_added=date.date.today(), quantity=int(quantity), itemid_id=product.id, user_id=user)
         ci.save()
         context_dict['cartitem'] = ci
 

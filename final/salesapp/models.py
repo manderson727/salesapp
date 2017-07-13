@@ -45,12 +45,9 @@ class CartItem(models.Model):
 
     def name(self):
         return self.product.name
-
-    # def price(self):
-    #     return self.product.price
     #
     def get_absolute_url(self):
-        return self.product.get_absolute_url()
+        return self.itemid.get_absolute_url()
     #
     # def augment_quantity(self, quantity):
     #     self.quantity = self.quantity + int(quantity)
@@ -58,4 +55,8 @@ class CartItem(models.Model):
     #
     @property
     def total(self):
-        return self.quantity #* self.product.price
+        return self.quantity * self.itemid.price
+
+    @property
+    def price(self):
+        return self.itemid.price

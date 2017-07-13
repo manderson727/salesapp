@@ -17,6 +17,10 @@
                 <th style="width: 50px; border-bottom:1px solid gray; text-align:center;">Qty</th>
                 <th style="width: 50px; border-bottom:1px solid gray; text-align:center;">Price</th>
                 <th style="width: 50px; border-bottom:1px solid gray; text-align:center;">Total</th>
+                <th style="width: 50px; border-bottom:1px solid gray; text-align:center;"></th>
+                <th style="width: 50px; border-bottom:1px solid gray; text-align:center;"></th>
+                <th style="width: 50px; border-bottom:1px solid gray; text-align:center;"></th>
+                <th style="width: 50px; border-bottom:1px solid gray; text-align:center;"></th>
             </tr>
             {% for cartitem in cartitems %}
             <tr style="height:100px; border-bottom:1px solid gray;">
@@ -30,6 +34,41 @@
                 <td style="width: 10px; text-align:center;">{{ cartitem.quantity }}</td>
                 <td style="width: 10px; text-align:center;">${{ cartitem.itemid.price }}</td>
                 <td style="width: 10px; text-align:center;">${{ cartitem.total }}</td>
+
+                    <form method="post" action="." class="cart">
+                        {% csrf_token %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        {% for field in form.visible_fields %}
+                            {{ field.errors }}
+                            {{ field.help_text }}
+                            {{ field }}
+                        {% endfor %}
+                <td><label for="quantity">Quantity:</label></td>
+                <td><input type="text" name="quantity" value="{{ cartitem.quantity }}" id="quantity"
+                     size="2" class="quantity" maxlength="5" />
+                </td>
+                     <input type="hidden" name="itemid_id" value="{{ cartitem.itemid_id }}" />
+                <td>
+                         <input type="submit" name="submit" value="Update" />
+                     </form>
+                </td>
+                <td>
+                    <form method="post" action="/salesapp/items/{{ cartitem.itemid.slug }}/remove/" class="cart">
+                        {% csrf_token %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        {% for field in form.visible_fields %}
+                            {{ field.errors }}
+                            {{ field.help_text }}
+                            {{ field }}
+                        {% endfor %}
+                     <input type="hidden" name="id" value="{{ cartitem.id }}" />
+                     <input type="submit" name="submit" value="Remove"/>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </table>
