@@ -14,7 +14,7 @@
             <div>
                 <ul style="list-style:none; text-align:center;">
                     <li style="float:left; width:25%; margin:20px;">
-                            <img src="/{{ product.image }}"/>
+                            <img src="{{ MEDIA_URL }}{{ product.image }}"/>
                         <div>
                             <b><a href="/salesapp/items/{{ product.slug }}">{{ product.itemname }}</a></b><br/>
                             Price per cigar:<br/>
